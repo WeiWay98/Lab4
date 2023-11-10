@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake eCommerce Website</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-3">
+    <h1 class="text-center mb-4">Fake eCommerce Website</h1>
+
+    <!-- Category Dropdown -->
+    <div class="form-group">
+        <label for="categorySelect">Select Category:</label>
+        <select class="form-control" id="categorySelect" onchange="filterProducts()">
+            <option value="">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="jewelery">Jewelery</option>
+            <option value="men's clothing">Men's Clothing</option>
+            <option value="women's clothing">Women's Clothing</option>
+        </select>
+    </div>
+
+    <!-- Search Bar (Optional Extra 1) -->
+    <div class="form-group">
+        <label for="searchInput">Search for Item:</label>
+        <input type="text" class="form-control" id="searchInput" oninput="filterProducts()">
+    </div>
+
+    <!-- Product Cards -->
+    <div class="row" id="productContainer">
+        <!-- Product cards will be dynamically added here -->
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+<script>
+    // Fetch data from the Fake Store API
+    fetch('https://fakestoreapi.com/products')
+        .then(response => response.json())
+        .then(products => displayProducts(products))
+        .catch(error => console.error('Error fetching data:', error));
+
+    function displayProducts(products) {
+        const productContainer = document.getElementById('productContainer');
+        productContainer.innerHTML = ''; // Clear previous content
+
+        products.forEach(product => {
+            // Create Bootstrap card for each product
+            const card = document.createElement('div');
+            card.className = 'col-lg-4 col-md-6 mb-4';
+
+            card.innerHTML = `
+                <div class="card h-100">
+                    <img class="card-img-top" src="${product.image}" alt="${product.title}">
+                    <div class="card-body">
+                        <h4 class="card-title">${product.title}</h4>
+                        <p class="card-text">${product.description}</p>
+                        <p class="card-text">Price: $${product.price}</p>
+                        <p class="card-text">Category: ${product.category}</p>
+                    </div>
+                </div>
+            `;
+
+            productContainer.appendChild(card);
+        });
+    }
+
+    // Filter products based on category and search input
+    function filterProducts() {
+        const categorySelect = document.getElementById('categorySelect');
+        const searchInput = document.getElementById('searchInput');
+
+        const selectedCategory = categorySelect.value.toLowerCase();
+        const searchQuery = searchInput.value.toLowerCase();
+
+        // Fetch data from the Fake Store API
+        fetch('https://fakestoreapi.com/products')
+            .then(response => response.json())
+            .then(products => {
+                const filteredProducts = products.filter(product => {
+                    const matchesCategory = selectedCategory === '' || product.category.toLowerCase() === selectedCategory;
+                    const matchesSearch = searchQuery === '' ||
+                        product.title.toLowerCase().includes(searchQuery) ||
+                        product.description.toLowerCase().includes(searchQuery);
+
+                    return matchesCategory && matchesSearch;
+                });
+
+    
+                displayProducts(filteredProducts);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Update</title>
+    <style>
+        #news-container {
+            margin-top: 20px;
+        }
+
+        .news-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #add-news-form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="news-container"></div>
+
+<div id="add-news-form">
+    <input type="text" id="news-title" placeholder="News Title">
+    <input type="text" id="news-content" placeholder="News Content">
+    <button onclick="addNewsItem()">Add News</button>
+</div>
+
+<script>
+    let news = [
+        { id: 1, title: 'Election Results', content: "Newly elected minister..." },
+        { id: 2, title: 'Sporting Success', content: "World Cup winners..." },
+        { id: 3, title: 'Tornado Warning', content: "Residents should prepare..." }
+    ];
+
+    function updateNews() {
+        // Get the news container
+        const newsContainer = document.getElementById('news-container');
+
+        // Clear existing news items
+        newsContainer.innerHTML = '';
+
+        // Loop through the news array and add new items
+        news.forEach(article => {
+            const newsItem = document.createElement('div');
+            newsItem.classList.add('news-item');
+            newsItem.innerHTML = `<h2>${article.title}</h2><p>${article.content}</p>`;
+            newsContainer.appendChild(newsItem);
+        });
+    }
+
+    function addNewsItem() {
+        // Get values from the input fields
+        const newsTitle = document.getElementById('news-title').value;
+        const newsContent = document.getElementById('news-content').value;
+
+        // Check if both title and content are provided
+        if (newsTitle && newsContent) {
+            // Generate a unique ID for the new news item
+            const newId = news.length + 1;
+
+            // Create a new news item and add it to the array
+            const newNewsItem = { id: newId, title: newsTitle, content: newsContent };
+            news.push(newNewsItem);
+
+            // Update the news display
+            updateNews();
+        }
+
+        // Clear input fields
+        document.getElementById('news-title').value = '';
+        document.getElementById('news-content').value = '';
+    }
+
+    // Initial load
+    updateNews();
+
+    // Set interval to update news every 5 seconds
+    setInterval(updateNews, 5000);
+</script>
+
+</body>
+</html>

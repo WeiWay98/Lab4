@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Animation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #slider {
+            width: 100px;
+            height: 100px;
+            background-color: #3498db;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: slideAnimation 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes slideAnimation {
+            0%, 100% {
+                top: 0;
+                background-color: #3498db;
+            }
+            50% {
+                top: calc(100vh - 100px);
+                background-color: #e74c3c;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="slider"></div>
+
+</body>
+</html>
