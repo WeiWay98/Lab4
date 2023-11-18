@@ -1,20 +1,16 @@
 const express = require('express');
-const fetch = require('node-fetch');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+const fakeStoreController = require('./controllers/fakeStoreController');
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.get('/api/products', async (req, res) => {
-  try {
-    const response = await fetch('https://fakestoreapi.com/products');
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    console.error('Error fetching data:', error.message);
-    res.status(500).send('Internal Server Error');
-  }
-});
+// Your API routes and controller functions will go here
+app.get('/api/fake-store', fakeStoreController.getFakeStoreData);
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

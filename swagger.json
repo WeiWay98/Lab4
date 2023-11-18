@@ -1,0 +1,20 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Fake Store API",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/api/fake-store": {
+        "get": {
+          "summary": "Get Fake Store Data",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      }
+    }
+  }
+
